@@ -6,7 +6,6 @@
 // 6. Detect function DONE
 // 7. Drawing utilities from tensorflow DONE
 // 8. Draw functions DONE
-// s
 
 import React, { useRef } from "react";
 import "./App.css";
