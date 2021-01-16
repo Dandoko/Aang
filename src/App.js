@@ -15,7 +15,7 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
-import Model from "./Model";
+import Notification from "./Notification";
 
 function App() {
   const webcamRef = useRef(null);
@@ -152,7 +152,7 @@ function App() {
     drawSkeleton(pose["keypoints"], 0.7, ctx);
   };
 
-  let bodyPoint = "e";
+  let bodyPoint = "";
 
   return (
     <div className="App">
@@ -194,7 +194,8 @@ function App() {
           }}
         />
       </header>
-      <Model bodyPoint={bodyPoint}></Model>
+
+      <Notification bodyPoint={bodyPoint}></Notification>
     </div>
   );
 }
