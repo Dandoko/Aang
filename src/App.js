@@ -21,8 +21,8 @@ function App() {
   var poses = []; // stores 10 most recent poses - nose, eyes, ...
   const maxPoses = 10;
 
-  var calibratedPose;
-  var currPose;
+  var calibratedPose = Pose;
+  var currPose = Poset;
 
   var calibrated = false;
 
@@ -58,6 +58,7 @@ function App() {
       //console.log(pose);
 
       if (calibrated) {
+        console.log(calibratePose);
         drawCanvas(calibratedPose, video, videoWidth, videoHeight, canvasRef);
         return;
       }
@@ -77,7 +78,7 @@ function App() {
     poses.push(pose);
 
     if (!calibrated && poses.length == maxPoses) {
-      calibratePose();
+      calibratePose(0.6);
     }
   };
 
@@ -96,35 +97,32 @@ function App() {
     for (var i = 0; i < poses[0]["keypoints"].length; i++) {
       // initialize component
       var poseComponent = PoseComponent;
-      poseComponent.part = poses[0][i].part;
-      //poseComponent.keypoints =
+      console.log(poses[0]["keypoints"][i]);
+      poseComponent.part = poses[0]["keypoints"][i].part;
 
       var count = 0;
 
-      // include high confidence poses
+      // j is pose, i is keypoint (body part)
       for (var j = 0; j < maxPoses; j++) {
-        console.log("Pose" + j);
-        console.log(poses[j]);
+        //console.log("Pose" + j);//TODO Empty PoseCompnents
+        //console.log(poses[j]);
+
         if (poses[j]["keypoints"][i].score >= minConfidence) {
           // get sum for mean
-          // j is pose, i is body part
-          poseComponent["keypoints"][i].position.x +=
-            poses[j]["keypoints"][i].position.x;
-          poseComponent["keypoints"][i].position.y +=
-            poses[j]["keypoints"][i].position.y;
-          poseComponent["keypoints"][i].score += poses[j]["keypoints"][i].score;
+          poseComponent.position.x += poses[j]["keypoints"][i].position.x;
+          poseComponent.position.y += poses[j]["keypoints"][i].position.y;
+          poseComponent.score += poses[j]["keypoints"][i].score;
 
           count++;
         }
       }
 
-      // average
-      poseComponent["keypoints"][i].position.x /= count;
-      poseComponent["keypoints"][i].position.y /= count;
-      poseComponent["keypoints"][i].score /= count;
+      poseComponent.position.x /= count;
+      poseComponent.position.y /= count;
+      poseComponent.score /= count;
 
-      calibratedPose = poseComponent;
-      currPose = poseComponent;
+      calibratedPose["keypoints"].push(poseComponent);
+      currPose["keypoints"].push(poseComponent);
     }
 
     console.log("Calibrating done");
@@ -182,18 +180,18 @@ function App() {
 // point; a body part
 const PoseComponent = {
   position: {
-    x: (double = 0),
-    y: (double = 0),
+    x: 0,
+    y: 0,
   },
   part: String,
-  score: (double = 0),
+  score: 0,
 };
 
 // a collection of PoseComponent points
 const Pose = {
   keypoints: [
     {
-      PoseComponents,
+      PoseComponent,
     },
   ],
 };
