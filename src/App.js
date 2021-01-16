@@ -61,7 +61,7 @@ function App() {
         const ctx = canvasRef.current.getContext("2d");
         canvasRef.current.width = videoWidth;
         canvasRef.current.height = videoHeight;
-    
+
         drawKeypoints(standardPose["keypoints"], 0.6, ctx);
         drawSkeleton(standardPose["keypoints"], 0.7, ctx);
         return;
@@ -73,7 +73,7 @@ function App() {
     }
   };
 
-  const addPose = (pose) => {    
+  const addPose = (pose) => {
     if (poses.length >= maxPoses) {
       poses.shift();
     }
@@ -83,7 +83,7 @@ function App() {
     if (poses.length == maxPoses) {
       calibratePose();
     }
-  }
+  };
 
   const ergoComputation = () => {
     if (poses.length < maxPoses) {
@@ -92,21 +92,23 @@ function App() {
 
     //PostureChecker();
     //ArmChecker();
-  }
+  };
 
   const calibratePose = (minConfidence) => {
     calibrated = true;
-    for (var i = 0; i < poses[0]["keypoints"].length; i ++) {
+    for (var i = 0; i < poses[0]["keypoints"].length; i++) {
       var poseComponent = poses[0];
       var count = 0;
 
-      for (var j = 1; j < maxPoses; j ++) {
+      for (var j = 1; j < maxPoses; j++) {
         if (poses[j]["keypoints"][i].score >= minConfidence) {
-          poseComponent["keypoints"][i].position.x += poses[j]["keypoints"][i].position.x;
-          poseComponent["keypoints"][i].position.y += poses[j]["keypoints"][i].position.y;
+          poseComponent["keypoints"][i].position.x +=
+            poses[j]["keypoints"][i].position.x;
+          poseComponent["keypoints"][i].position.y +=
+            poses[j]["keypoints"][i].position.y;
           poseComponent["keypoints"][i].score += poses[j]["keypoints"][i].score;
 
-          count ++;
+          count++;
         }
       }
 
@@ -117,8 +119,7 @@ function App() {
       standardPose = poseComponent;
       currPose = poseComponent;
     }
-  }
-
+  };
 
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
