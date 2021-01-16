@@ -200,12 +200,14 @@ function App() {
 
     //Determine bad posture
     if (isLower || isCloser || isFurther) {
-      
+      bodyPoint = "leftAnkle";
+    } else {
+      bodyPoint = "";
     }
   }
 
   runPosenet();
-  let bodyPoint = "rightEye";
+  let bodyPoint = "";
 
   return (
     <div className="App">
