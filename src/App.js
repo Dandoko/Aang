@@ -151,7 +151,7 @@ function App() {
 
   runPosenet();
 
-  let bodyPoint = "head";
+  let bodyPoint = "rightEye";
 
   return (
     <div className="App">
