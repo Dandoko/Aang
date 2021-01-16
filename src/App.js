@@ -18,6 +18,14 @@ function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
+  var poses = [];
+  const maxPoses = 10;
+
+  var standardPose;
+  var currPose;
+
+  var calibrated = false;
+
   //  Load posenet
   const runPosenet = async () => {
     const net = await posenet.load({
@@ -49,9 +57,68 @@ function App() {
       const pose = await net.estimateSinglePose(video);
       console.log(pose);
 
+      if (calibrated) {
+        const ctx = canvasRef.current.getContext("2d");
+        canvasRef.current.width = videoWidth;
+        canvasRef.current.height = videoHeight;
+    
+        drawKeypoints(standardPose["keypoints"], 0.6, ctx);
+        drawSkeleton(standardPose["keypoints"], 0.7, ctx);
+        return;
+      }
+
+      addPose(pose);
+
       drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
     }
   };
+
+  const addPose = (pose) => {    
+    if (poses.length >= maxPoses) {
+      poses.shift();
+    }
+
+    poses.push(pose);
+
+    if (poses.length == maxPoses) {
+      calibratePose();
+    }
+  }
+
+  const ergoComputation = () => {
+    if (poses.length < maxPoses) {
+      return;
+    }
+
+    //PostureChecker();
+    //ArmChecker();
+  }
+
+  const calibratePose = (minConfidence) => {
+    calibrated = true;
+    for (var i = 0; i < poses[0]["keypoints"].length; i ++) {
+      var poseComponent = poses[0];
+      var count = 0;
+
+      for (var j = 1; j < maxPoses; j ++) {
+        if (poses[j]["keypoints"][i].score >= minConfidence) {
+          poseComponent["keypoints"][i].position.x += poses[j]["keypoints"][i].position.x;
+          poseComponent["keypoints"][i].position.y += poses[j]["keypoints"][i].position.y;
+          poseComponent["keypoints"][i].score += poses[j]["keypoints"][i].score;
+
+          count ++;
+        }
+      }
+
+      poseComponent["keypoints"][i].position.x /= count;
+      poseComponent["keypoints"][i].position.y /= count;
+      poseComponent["keypoints"][i].score /= count;
+
+      standardPose = poseComponent;
+      currPose = poseComponent;
+    }
+  }
+
 
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
