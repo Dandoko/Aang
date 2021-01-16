@@ -15,6 +15,7 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
+import Model from "./Model";
 
 function App() {
   const webcamRef = useRef(null);
@@ -32,6 +33,7 @@ function App() {
 
   //  Load posenet
   const runPosenet = async () => {
+    console.log("Running Posenet :)");
     const net = await posenet.load({
       inputResolution: { width: 640, height: 480 },
       scale: 0.8,
@@ -61,6 +63,8 @@ function App() {
         console.log(calibratedPose);
         drawCanvas(calibratedPose, video, videoWidth, videoHeight, canvasRef);
         return;
+      } else {
+        console.log("loading :o");
       }
 
       // Make Detections
@@ -201,9 +205,17 @@ function App() {
   }
 
   runPosenet();
+  let bodyPoint = "rightEye";
 
   return (
     <div className="App">
+      <button
+        onClick={() => {
+          runPosenet();
+        }}
+      >
+        Run
+      </button>
       <header className="App-header">
         <Webcam
           ref={webcamRef}
@@ -235,6 +247,7 @@ function App() {
           }}
         />
       </header>
+      <Model bodyPoint={bodyPoint}></Model>
     </div>
   );
 }
