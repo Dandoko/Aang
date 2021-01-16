@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function Model(props) {
+export default function Model({ bodyPoint }) {
   return (
     <div>
-      <h1>body part</h1>
+      <h1>{bodyPoint}</h1>
     </div>
   );
 }

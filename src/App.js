@@ -15,6 +15,7 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
+import Model from "./Model";
 
 function App() {
   const webcamRef = useRef(null);
@@ -150,6 +151,8 @@ function App() {
 
   runPosenet();
 
+  let bodyPoint = "head";
+
   return (
     <div className="App">
       <header className="App-header">
@@ -183,6 +186,7 @@ function App() {
           }}
         />
       </header>
+      <Model bodyPoint={bodyPoint}></Model>
     </div>
   );
 }
