@@ -18,7 +18,7 @@ function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  var poses = [];
+  var poses = []; // stores 10 most recent poses - nose, eyes, ...
   const maxPoses = 10;
 
   var calibratedPose = Pose;
@@ -70,7 +70,8 @@ function App() {
     }
   };
 
-  const addPose = (pose) => {    
+  // replaces oldest pose with newest pose
+  const addPose = (pose) => {
     if (poses.length >= maxPoses) {
       poses.shift();
     }
@@ -80,7 +81,7 @@ function App() {
     if (!calibrated && poses.length == maxPoses) {
       calibratePose(0.6);
     }
-  }
+  };
 
   const ergoComputation = () => {
     if (poses.length < maxPoses) {
@@ -89,11 +90,13 @@ function App() {
 
     //PostureChecker();
     //ArmChecker();
-  }
+  };
 
   const calibratePose = (minConfidence) => {
     calibrated = true;
-    for (var i = 0; i < poses[0]["keypoints"].length; i ++) {
+    // loops 17 times for 17 keypoints (body parts)
+    for (var i = 0; i < poses[0]["keypoints"].length; i++) {
+      // initialize component
       var poseComponent = PoseComponent;
       console.log(poses[0]["keypoints"][i]);
       poseComponent.part = poses[0]["keypoints"][i].part;
@@ -104,6 +107,7 @@ function App() {
         console.log("Pose" + j);//TODO Empty PoseCompnents
         console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
+          // get sum for mean
           poseComponent.position.x += poses[j]["keypoints"][i].position.x;
           poseComponent.position.y += poses[j]["keypoints"][i].position.y;
           poseComponent.score += poses[j]["keypoints"][i].score;
@@ -133,9 +137,7 @@ function App() {
 
     console.log("Calibrating done");
     console.log(calibratedPose);
-    console.log("harembe");
-  }
-
+  };
 
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
@@ -185,15 +187,17 @@ function App() {
   );
 }
 
+// point; a body part
 const PoseComponent = {
-  "position": {
-    "x": 0, 
-    "y": 0
+  position: {
+    x: 0,
+    y: 0,
   },
-  "part": String,
-  "score": 0
-}
+  part: String,
+  score: 0,
+};
 
+// a collection of PoseComponent points
 const Pose = {
     "keypoints": [
       {
