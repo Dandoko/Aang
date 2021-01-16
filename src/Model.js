@@ -1,8 +1,9 @@
 import React from "react";
-import base from "./res/head.png";
+import head from "./res/head.png";
 import left from "./res/leftArm.png";
 import right from "./res/rightArm.png";
 import legs from "./res/legs.png";
+import base from "./res/base.png";
 
 // chooses which model image to display
 export default function Model({ bodyPoint }) {
@@ -14,7 +15,7 @@ export default function Model({ bodyPoint }) {
     case "rightEar":
     case "leftShoulder":
     case "rightShoulder":
-      return <img src={base} alt="head model" />;
+      return <img src={head} alt="head model" />;
     case "leftElbow":
     case "leftWrist":
       return <img src={left} alt="left arm model" />;
