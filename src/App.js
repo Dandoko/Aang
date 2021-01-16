@@ -27,6 +27,8 @@ function App() {
   var calibratedPose = new Pose();
   var currPose = new Pose();
 
+  var posture = true;
+
   var calibrated = false;
 
   //  Load posenet
@@ -71,6 +73,8 @@ function App() {
 
       addPose(pose);
 
+      ergoComputation();
+
       drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
     }
   };
@@ -83,8 +87,8 @@ function App() {
 
     poses.push(pose);
 
-    if (!calibrated && poses.length == maxPoses) {
-      calibratePose(0.6);
+    if (poses.length == maxPoses) {
+      averagePoses(0.6);
     }
   };
 
@@ -93,12 +97,11 @@ function App() {
       return;
     }
 
-    //PostureChecker();
+    PostureChecker();
     //ArmChecker();
   };
 
-  const calibratePose = (minConfidence) => {
-    calibrated = true;
+  const averagePoses = (minConfidence) => {
     // loops 17 times for 17 keypoints (body parts)
     for (var i = 0; i < poses[0]["keypoints"].length; i++) {
       // initialize component
@@ -109,7 +112,7 @@ function App() {
       var count = 0;
 
       for (var j = 0; j < maxPoses; j++) {
-        console.log("Pose" + j); //TODO Empty PoseCompnents
+        console.log("Pose" + j);
         console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
           // get sum for mean
@@ -135,12 +138,16 @@ function App() {
 
       console.log(poseComponent);
 
-      calibratedPose["keypoints"].push(poseComponent);
+      if (!calibrated) {
+        calibratedPose["keypoints"].push(poseComponent);
+      }
       currPose["keypoints"].push(poseComponent);
     }
 
     console.log("Calibrating done");
     console.log(calibratedPose);
+    
+    calibrated = true;
   };
 
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
@@ -152,7 +159,55 @@ function App() {
     drawSkeleton(pose["keypoints"], 0.7, ctx);
   };
 
-  let bodyPoint = "e";
+  const PostureChecker = () => {
+    //Caclulate distance between eyes ,eears, and height
+    let calNosePos = calibratedPose["keypoints"][0].position;
+    let actNosePos = currPose["keypoints"][0].position;
+    let calNoseHeight = Math.sqrt(calNosePos.y);
+    let actNoseHeight = Math.sqrt(actNosePos.y);
+
+    let calLEyePos = calibratedPose["keypoints"][1].position;
+    let calREyePos = calibratedPose["keypoints"][2].position;
+    let actLEyePos = currPose["keypoints"][1].position;
+    let actREyePos = currPose["keypoints"][2].position;
+    let calEyeDist = Math.sqrt(calLEyePos*calLEyePos + calREyePos*calREyePos);
+    let actEyeDist = Math.sqrt(actLEyePos*actLEyePos + actREyePos*actREyePos);
+    
+    let calLEarPos = calibratedPose["keypoints"][3].position;
+    let calREarPos = calibratedPose["keypoints"][4].position;
+    let actLEarPos = currPose["keypoints"][3].position;
+    let actREarPos = currPose["keypoints"][4].position;
+    let calEarDist = Math.sqrt(calLEarPos*calLEarPos + calREarPos*calREarPos);
+    let actEarDist = Math.sqrt(actLEarPos*actLEarPos + actREarPos*actREarPos);
+
+    //Use those values to detemrine posture
+    var isLower = false;
+    var isCloser = false;
+    var isFurther = false;
+
+    let noseDistDiffThreshold = 20;
+    let eyeDistDiffThreshold = 30;
+    let earDistDiffThreshold = 30;
+
+    isLower = (calNoseHeight - actNoseHeight > noseDistDiffThreshold);
+
+    isCloser = (actEyeDist - calEyeDist > eyeDistDiffThreshold) && 
+               (actEarDist - calEarDist > earDistDiffThreshold);
+
+    isFurther = isCloser ? false 
+                         : (calEyeDist - actEyeDist > eyeDistDiffThreshold) && 
+                           (calEarDist - actEarDist > earDistDiffThreshold);
+
+    //Determine bad posture
+    if (isLower || isCloser || isFurther) {
+      bodyPoint = "leftAnkle";
+    } else {
+      bodyPoint = "";
+    }
+  }
+
+  runPosenet();
+  let bodyPoint = "";
 
   return (
     <div className="App">
