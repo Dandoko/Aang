@@ -93,16 +93,16 @@ function App() {
   const calibratePose = (minConfidence) => {
     calibrated = true;
     // loops 17 times for 17 keypoints (body parts)
-    for (var i = 0; i < poses[0]["keypoints"].length; i ++) {
+    for (var i = 0; i < poses[0]["keypoints"].length; i++) {
       // initialize component
-      var poseComponent = PoseComponent; 
+      var poseComponent = PoseComponent;
       poseComponent.part = poses[0][i].part;
-      poseComponent.keypoints = 
+      //poseComponent.keypoints =
 
       var count = 0;
 
       // include high confidence poses
-      for (var j = 0; j < maxPoses; j ++) {
+      for (var j = 0; j < maxPoses; j++) {
         console.log("Pose" + j);
         console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
@@ -129,8 +129,7 @@ function App() {
 
     console.log("Calibrating done");
     console.log(calibratedPose);
-  }
-
+  };
 
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
     const ctx = canvas.current.getContext("2d");
@@ -182,21 +181,21 @@ function App() {
 
 // point; a body part
 const PoseComponent = {
-  "position": {
-    "x": double = 0, 
-    "y": double = 0
+  position: {
+    x: (double = 0),
+    y: (double = 0),
   },
-  "part": String,
-  "score": double = 0
-}
+  part: String,
+  score: (double = 0),
+};
 
 // a collection of PoseComponent points
 const Pose = {
-    "keypoints": [
-      {
-        PoseComponents,
-      }
-    ]
+  keypoints: [
+    {
+      PoseComponents,
+    },
+  ],
 };
 
 export default App;
