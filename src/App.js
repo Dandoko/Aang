@@ -13,6 +13,8 @@ import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
+import PoseComponent from "./PoseComponent";
+import Pose from "./Pose";
 
 function App() {
   const webcamRef = useRef(null);
@@ -21,8 +23,8 @@ function App() {
   var poses = []; // stores 10 most recent poses - nose, eyes, ...
   const maxPoses = 10;
 
-  var calibratedPose = Pose;
-  var currPose = Pose;
+  var calibratedPose = new Pose();
+  var currPose = new Pose();
 
   var calibrated = false;
 
@@ -52,7 +54,6 @@ function App() {
       // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
-
 
       if (calibrated) {
         console.log(calibratedPose);
@@ -97,14 +98,14 @@ function App() {
     // loops 17 times for 17 keypoints (body parts)
     for (var i = 0; i < poses[0]["keypoints"].length; i++) {
       // initialize component
-      var poseComponent = PoseComponent;
+      var poseComponent = new PoseComponent();
       console.log(poses[0]["keypoints"][i]);
       poseComponent.part = poses[0]["keypoints"][i].part;
 
       var count = 0;
 
-      for (var j = 0; j < maxPoses; j ++) {
-        console.log("Pose" + j);//TODO Empty PoseCompnents
+      for (var j = 0; j < maxPoses; j++) {
+        console.log("Pose" + j); //TODO Empty PoseCompnents
         console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
           // get sum for mean
@@ -112,7 +113,7 @@ function App() {
           poseComponent.position.y += poses[j]["keypoints"][i].position.y;
           poseComponent.score += poses[j]["keypoints"][i].score;
 
-          count ++;
+          count++;
 
           console.log(count);
         }
@@ -127,7 +128,6 @@ function App() {
         poseComponent.position.y /= count;
         poseComponent.score /= count;
       }
-
 
       console.log(poseComponent);
 
@@ -186,29 +186,5 @@ function App() {
     </div>
   );
 }
-
-// point; a body part
-const PoseComponent = {
-  position: {
-    x: 0,
-    y: 0,
-  },
-  part: String,
-  score: 0,
-};
-
-// a collection of PoseComponent points
-const Pose = {
-    "keypoints": [
-      {
-        "position": {
-          "x": 0, 
-          "y": 0
-        },
-        "part": String,
-        "score": 0
-      }
-    ]
-  };
 
 export default App;
