@@ -22,7 +22,7 @@ function App() {
   const maxPoses = 10;
 
   var calibratedPose = Pose;
-  var currPose = Poset;
+  var currPose = Pose;
 
   var calibrated = false;
 
@@ -53,15 +53,16 @@ function App() {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      // Make Detections
-      const pose = await net.estimateSinglePose(video);
-      //console.log(pose);
 
       if (calibrated) {
-        console.log(calibratePose);
+        console.log(calibratedPose);
         drawCanvas(calibratedPose, video, videoWidth, videoHeight, canvasRef);
         return;
       }
+
+      // Make Detections
+      const pose = await net.estimateSinglePose(video);
+      //console.log(pose);
 
       addPose(pose);
 
@@ -100,20 +101,31 @@ function App() {
       var count = 0;
 
       for (var j = 0; j < maxPoses; j ++) {
-        //console.log("Pose" + j);//TODO Empty PoseCompnents
-        //console.log(poses[j]);
+        console.log("Pose" + j);//TODO Empty PoseCompnents
+        console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
           poseComponent.position.x += poses[j]["keypoints"][i].position.x;
           poseComponent.position.y += poses[j]["keypoints"][i].position.y;
           poseComponent.score += poses[j]["keypoints"][i].score;
 
           count ++;
+
+          console.log(count);
         }
       }
 
-      poseComponent.position.x /= count;
-      poseComponent.position.y /= count;
-      poseComponent.score /= count;
+      if (count == 0) {
+        poseComponent.position.x = 0;
+        poseComponent.position.y = 0;
+        poseComponent.score = 0;
+      } else {
+        poseComponent.position.x /= count;
+        poseComponent.position.y /= count;
+        poseComponent.score /= count;
+      }
+
+
+      console.log(poseComponent);
 
       calibratedPose["keypoints"].push(poseComponent);
       currPose["keypoints"].push(poseComponent);
@@ -185,7 +197,12 @@ const PoseComponent = {
 const Pose = {
     "keypoints": [
       {
-        PoseComponent,
+        "position": {
+          "x": 0, 
+          "y": 0
+        },
+        "part": String,
+        "score": 0
       }
     ]
   };
