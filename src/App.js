@@ -7,7 +7,7 @@
 // 7. Drawing utilities from tensorflow DONE
 // 8. Draw functions DONE
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./App.css";
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
@@ -16,6 +16,7 @@ import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
 import Model from "./Model";
+import { act } from "react-dom/test-utils";
 
 function App() {
   const webcamRef = useRef(null);
@@ -27,9 +28,9 @@ function App() {
   var calibratedPose = new Pose();
   var currPose = new Pose();
 
-  var posture = true;
-
   var calibrated = false;
+
+  const [bodyPoint, setBodyPoint] = useState("");
 
   //  Load posenet
   const runPosenet = async () => {
@@ -59,21 +60,21 @@ function App() {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      if (calibrated) {
-        console.log(calibratedPose);
-        drawCanvas(calibratedPose, video, videoWidth, videoHeight, canvasRef);
-        return;
-      } else {
-        console.log("loading :o");
-      }
-
       // Make Detections
       const pose = await net.estimateSinglePose(video);
       //console.log(pose);
 
       addPose(pose);
 
-      ergoComputation();
+      if (calibrated) {
+        console.log(calibratedPose);
+        drawCanvas(calibratedPose, video, videoWidth, videoHeight, canvasRef);
+
+        ergoComputation();
+        return;
+      } else {
+        console.log("loading :o");
+      }
 
       drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
     }
@@ -93,6 +94,7 @@ function App() {
   };
 
   const ergoComputation = () => {
+    console.log("Eroge");
     if (poses.length < maxPoses) {
       return;
     }
@@ -102,6 +104,7 @@ function App() {
   };
 
   const averagePoses = (minConfidence) => {
+    currPose = new Pose();
     // loops 17 times for 17 keypoints (body parts)
     for (var i = 0; i < poses[0]["keypoints"].length; i++) {
       // initialize component
@@ -112,8 +115,8 @@ function App() {
       var count = 0;
 
       for (var j = 0; j < maxPoses; j++) {
-        console.log("Pose" + j);
-        console.log(poses[j]);
+        //console.log("Pose" + j);
+        //console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
           // get sum for mean
           poseComponent.position.x += poses[j]["keypoints"][i].position.x;
@@ -122,7 +125,7 @@ function App() {
 
           count++;
 
-          console.log(count);
+          //console.log(count);
         }
       }
 
@@ -136,7 +139,7 @@ function App() {
         poseComponent.score /= count;
       }
 
-      console.log(poseComponent);
+      //console.log(poseComponent);
 
       if (!calibrated) {
         calibratedPose["keypoints"].push(poseComponent);
@@ -185,9 +188,9 @@ function App() {
     var isCloser = false;
     var isFurther = false;
 
-    let noseDistDiffThreshold = 20;
-    let eyeDistDiffThreshold = 30;
-    let earDistDiffThreshold = 30;
+    let noseDistDiffThreshold = 2;
+    let eyeDistDiffThreshold = 0.4;
+    let earDistDiffThreshold = 0.5;
 
     isLower = (calNoseHeight - actNoseHeight > noseDistDiffThreshold);
 
@@ -199,15 +202,18 @@ function App() {
                            (calEarDist - actEarDist > earDistDiffThreshold);
 
     //Determine bad posture
-    if (isLower || isCloser || isFurther) {
-      bodyPoint = "leftAnkle";
+    if (isLower) { //|| isCloser || isFurther) {
+      setBodyPoint("leftEye");
     } else {
-      bodyPoint = "";
+      setBodyPoint("");
     }
+
+    console.log(calNoseHeight + " | " + actNoseHeight +  " | " + noseDistDiffThreshold + "\n");
+    console.log(bodyPoint);
+    console.log("============================================================");
   }
 
-  runPosenet();
-  let bodyPoint = "";
+  // runPosenet();
 
   return (
     <div className="App">
