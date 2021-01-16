@@ -18,7 +18,7 @@ function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  var poses = [];
+  var poses = []; // stores 10 most recent poses - nose, eyes, ...
   const maxPoses = 10;
 
   var calibratedPose;
@@ -68,6 +68,7 @@ function App() {
     }
   };
 
+  // replaces oldest pose with newest pose
   const addPose = (pose) => {
     if (poses.length >= maxPoses) {
       poses.shift();
@@ -91,17 +92,22 @@ function App() {
 
   const calibratePose = (minConfidence) => {
     calibrated = true;
+    // loops 17 times for 17 keypoints (body parts)
     for (var i = 0; i < poses[0]["keypoints"].length; i ++) {
-      var poseComponent = PoseComponent;
+      // initialize component
+      var poseComponent = PoseComponent; 
       poseComponent.part = poses[0][i].part;
       poseComponent.keypoints = 
 
       var count = 0;
 
+      // include high confidence poses
       for (var j = 0; j < maxPoses; j ++) {
         console.log("Pose" + j);
         console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
+          // get sum for mean
+          // j is pose, i is body part
           poseComponent["keypoints"][i].position.x +=
             poses[j]["keypoints"][i].position.x;
           poseComponent["keypoints"][i].position.y +=
@@ -112,6 +118,7 @@ function App() {
         }
       }
 
+      // average
       poseComponent["keypoints"][i].position.x /= count;
       poseComponent["keypoints"][i].position.y /= count;
       poseComponent["keypoints"][i].score /= count;
@@ -173,6 +180,7 @@ function App() {
   );
 }
 
+// point; a body part
 const PoseComponent = {
   "position": {
     "x": double = 0, 
@@ -182,12 +190,13 @@ const PoseComponent = {
   "score": double = 0
 }
 
+// a collection of PoseComponent points
 const Pose = {
     "keypoints": [
       {
         PoseComponents,
       }
     ]
-  };
+};
 
 export default App;
