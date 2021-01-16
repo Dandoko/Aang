@@ -152,7 +152,7 @@ function App() {
     drawSkeleton(pose["keypoints"], 0.7, ctx);
   };
 
-  let bodyPoint = "rightEye";
+  let bodyPoint = "e";
 
   return (
     <div className="App">
