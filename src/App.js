@@ -21,7 +21,7 @@ function App() {
   var poses = [];
   const maxPoses = 10;
 
-  var standardPose;
+  var calibratedPose;
   var currPose;
 
   var calibrated = false;
@@ -55,15 +55,10 @@ function App() {
 
       // Make Detections
       const pose = await net.estimateSinglePose(video);
-      console.log(pose);
+      //console.log(pose);
 
       if (calibrated) {
-        const ctx = canvasRef.current.getContext("2d");
-        canvasRef.current.width = videoWidth;
-        canvasRef.current.height = videoHeight;
-    
-        drawKeypoints(standardPose["keypoints"], 0.6, ctx);
-        drawSkeleton(standardPose["keypoints"], 0.7, ctx);
+        drawCanvas(calibratedPose, video, videoWidth, videoHeight, canvasRef);
         return;
       }
 
@@ -80,7 +75,7 @@ function App() {
 
     poses.push(pose);
 
-    if (poses.length == maxPoses) {
+    if (!calibrated && poses.length == maxPoses) {
       calibratePose();
     }
   }
@@ -97,10 +92,15 @@ function App() {
   const calibratePose = (minConfidence) => {
     calibrated = true;
     for (var i = 0; i < poses[0]["keypoints"].length; i ++) {
-      var poseComponent = poses[0];
+      var poseComponent = PoseComponent;
+      poseComponent.part = poses[0][i].part;
+      poseComponent.keypoints = 
+
       var count = 0;
 
-      for (var j = 1; j < maxPoses; j ++) {
+      for (var j = 0; j < maxPoses; j ++) {
+        console.log("Pose" + j);
+        console.log(poses[j]);
         if (poses[j]["keypoints"][i].score >= minConfidence) {
           poseComponent["keypoints"][i].position.x += poses[j]["keypoints"][i].position.x;
           poseComponent["keypoints"][i].position.y += poses[j]["keypoints"][i].position.y;
@@ -114,9 +114,13 @@ function App() {
       poseComponent["keypoints"][i].position.y /= count;
       poseComponent["keypoints"][i].score /= count;
 
-      standardPose = poseComponent;
+      calibratedPose = poseComponent;
       currPose = poseComponent;
     }
+
+    console.log("Calibrating done");
+    console.log(calibratedPose);
+    console.log("harembe");
   }
 
 
@@ -167,5 +171,22 @@ function App() {
     </div>
   );
 }
+
+const PoseComponent = {
+  "position": {
+    "x": double = 0, 
+    "y": double = 0
+  },
+  "part": String,
+  "score": double = 0
+}
+
+const Pose = {
+    "keypoints": [
+      {
+        PoseComponents,
+      }
+    ]
+  };
 
 export default App;
