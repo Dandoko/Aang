@@ -18,6 +18,9 @@ import Pose from "./Pose";
 import Notification from "./Notification";
 import DepthNotification from "./DepthNotification";
 
+// chakra imports
+import { Button, Flex, Spacer, Box } from "@chakra-ui/react";
+
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -260,7 +263,16 @@ function App() {
       setDistance("Neutral")
     }
 
-    console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n")
+    console.log(
+      useEyes +
+        " | " +
+        calEyeDist +
+        " | " +
+        actEyeDist +
+        " | " +
+        eyeDistDiffThreshold +
+        "\n"
+    );
 
     console.log(
       calNoseHeight +
@@ -278,15 +290,16 @@ function App() {
 
   return (
     <div className="App">
-      <button
+      <Button
         onClick={() => {
           runPosenet();
         }}
+        size="lg"
       >
-        Run
-      </button>
+        Calibrate
+      </Button>
 
-      <header className="App-header" style={{ float: "left" }}>
+      <header className="App-header" style={{ float: "right" }}>
         <Webcam
           ref={webcamRef}
           style={{
@@ -322,6 +335,17 @@ function App() {
       ></Notification>
       <DepthNotification distance={distance}
       ></DepthNotification>
+
+      <Flex>
+        <Box p="400" bg="red.400">
+          Box 1
+        </Box>
+        <Spacer /> {/* eats available space */}
+        <Box p="4" bg="green.400">
+          Box 2
+        </Box>
+        <Notification colSpan={6} bodyPoint={"bodyPoint"}></Notification>
+      </Flex>
     </div>
   );
 }
