@@ -18,7 +18,9 @@ import Pose from "./Pose";
 import Notification from "./Notification";
 
 // chakra imports
-import { Button, Flex, Spacer, Box } from "@chakra-ui/react";
+import { Button, Grid, Box, GridItem, Image  } from "@chakra-ui/react";
+import {calibrateBtn, footer, title, mainContainer, fakeNav } from "./ui";
+import logo from "./res/logo.png";
 
 function App() {
   const webcamRef = useRef(null);
@@ -287,15 +289,6 @@ function App() {
 
   return (
     <div className="App">
-      <Button
-        onClick={() => {
-          runPosenet();
-        }}
-        size="lg"
-      >
-        Calibrate
-      </Button>
-
       <header className="App-header" style={{ float: "right" }}>
         <Webcam
           ref={webcamRef}
@@ -308,7 +301,9 @@ function App() {
             textAlign: "center",
             zindex: 9,
             width: 640,
-            height: 480,
+            height: 500,
+            zIndex: 2,
+            borderRadius: 30
           }}
         />
 
@@ -323,21 +318,48 @@ function App() {
             textAlign: "center",
             zindex: 9,
             width: 640,
-            height: 480,
+            height: 500,
+            zIndex: 2,
+            borderRadius: 30
           }}
         />
       </header>
 
-      <Flex>
-        <Box p="400" bg="red.400">
-          Box 1
-        </Box>
-        <Spacer /> {/* eats available space */}
-        <Box p="4" bg="green.400">
-          Box 2
-        </Box>
-        <Notification colSpan={6} bodyPoint={"bodyPoint"}></Notification>
-      </Flex>
+      <div style={mainContainer}>
+        <div style={fakeNav}>
+          <div style={{display:'flex', alignItems:"center", position: "relative", width:"100%"}}>
+            <div style={{display: "flex", justifyContent:"center", margin: "0 auto"}}>
+              <Box style={{marginRight: 10}} boxSize="40px">
+                <Image src={logo} alt="Segun Adebayo" />
+              </Box>
+              <div style={title}>
+                Aang
+              </div>
+            </div>
+          </div> 
+        </div>
+
+        <Grid templateColumns="repeat(5, 1fr)" gap={5}>
+          <GridItem colSpan={1} h="10">
+          </GridItem>
+          <GridItem colSpan={3} h="10"/>
+          <GridItem style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', marginRight:40 }} colSpan={1} h="10">
+            <Notification bodyPoint={"bodyPoint"}></Notification>
+          </GridItem>
+        </Grid>
+
+        <div style={footer}>
+          <Button
+            onClick={() => {
+              runPosenet();
+            }}
+            size="lg"
+            style={calibrateBtn}
+          >
+            Calibrate
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
