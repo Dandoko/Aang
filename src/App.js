@@ -9,14 +9,16 @@
 
 import React, { useRef, useState } from "react";
 import "./App.css";
-import * as tf from "@tensorflow/tfjs";
+// import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
+
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
 import Notification from "./Notification";
 import DepthNotification from "./DepthNotification";
+import Timer from "./Timer";
 
 // chakra imports
 import { Button, Flex, Spacer, Box } from "@chakra-ui/react";
@@ -92,7 +94,7 @@ function App() {
 
     poses.push(pose);
 
-    if (poses.length == maxPoses) {
+    if (poses.length === maxPoses) {
       averagePoses(0.6);
     }
   };
@@ -133,7 +135,7 @@ function App() {
         }
       }
 
-      if (count == 0) {
+      if (count === 0) {
         poseComponent.position.x = 0;
         poseComponent.position.y = 0;
         poseComponent.score = 0;
@@ -298,6 +300,8 @@ function App() {
       >
         Calibrate
       </Button>
+
+      <Timer></Timer>
 
       <header className="App-header" style={{ float: "right" }}>
         <Webcam

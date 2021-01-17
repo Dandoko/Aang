@@ -33,6 +33,8 @@
 
 - Tensorflow.js (posenet model)
 - React.js
+- Chakra UI
+- Electron.js
 
 # Challenges
 
