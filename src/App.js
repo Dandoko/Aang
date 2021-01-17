@@ -331,7 +331,7 @@ function App() {
         <div style={fakeNav}>
           <div style={{display:'flex', alignItems:"center", position: "relative", width:"100%"}}>
             <div style={{display: "flex", justifyContent:"center", margin: "0 auto"}}>
-              <Box style={{marginRight: 10}} boxSize="40px">
+              <Box style={{marginRight: 10}} boxSize="70px">
                 <Image src={logo} alt="Segun Adebayo" />
               </Box>
               <div style={title}>
@@ -348,13 +348,13 @@ function App() {
             <Notification distance={distance} bodyPoint={bodyPoint}></Notification>
           </GridItem>
         </Grid>
-
+        {/* size="lg" */}
         <div style={footer}>
           <Button
             onClick={() => {
               runPosenet();
             }}
-            size="lg"
+            
             style={calibrateBtn}
           >
             Calibrate
