@@ -327,7 +327,6 @@ function App() {
           }}
         />
       </header>
-      <DepthNotification distance={distance}></DepthNotification>
       <div style={mainContainer}>
         <div style={fakeNav}>
           <div style={{display:'flex', alignItems:"center", position: "relative", width:"100%"}}>
@@ -342,12 +341,11 @@ function App() {
           </div> 
         </div>
 
-        <Grid templateColumns="repeat(5, 1fr)" gap={5}>
-          <GridItem colSpan={1} h="10">
-          </GridItem>
-          <GridItem colSpan={3} h="10"/>
-          <GridItem style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', marginRight:40 }} colSpan={1} h="10">
-            <Notification bodyPoint={"bodyPoint"}></Notification>
+        
+
+        <Grid w="90%" style={{marginLeft:"5%"}}templateColumns="repeat(5, 1fr)" gap={2}>
+          <GridItem style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh',}} colStart={5} h="10">
+            <Notification distance={distance} bodyPoint={bodyPoint}></Notification>
           </GridItem>
         </Grid>
 
