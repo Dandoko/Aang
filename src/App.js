@@ -166,20 +166,28 @@ function App() {
     var useEyes = true;
     var useEars = true;
 
-    console.log(currPose["keypoints"][1].score + "||||" + currPose["keypoints"][2].score);
+    console.log(
+      currPose["keypoints"][1].score + "||||" + currPose["keypoints"][2].score
+    );
 
     if (currPose["keypoints"][0].score < minConfidence) {
       useNose = false;
     }
-    
-    if (currPose["keypoints"][1].score < minConfidence || currPose["keypoints"][2].score < minConfidence) {
+
+    if (
+      currPose["keypoints"][1].score < minConfidence ||
+      currPose["keypoints"][2].score < minConfidence
+    ) {
       useEyes = false;
     }
-    
-    if (currPose["keypoints"][3].score < minConfidence || currPose["keypoints"][4].score < minConfidence) {
+
+    if (
+      currPose["keypoints"][3].score < minConfidence ||
+      currPose["keypoints"][4].score < minConfidence
+    ) {
       useEars = false;
     }
-    
+
     //Caclulate distance between eyes ,eears, and height
     let calNosePos = calibratedPose["keypoints"][0].position;
     let actNosePos = currPose["keypoints"][0].position;
@@ -190,12 +198,16 @@ function App() {
     let calREyePos = calibratedPose["keypoints"][2].position;
     let actLEyePos = currPose["keypoints"][1].position;
     let actREyePos = currPose["keypoints"][2].position;
-    
-    let calEyeDist = Math.sqrt((calLEyePos.x - calREyePos.x)*(calLEyePos.x - calREyePos.x) +
-                               (calLEyePos.y - calREyePos.y)*(calLEyePos.y - calREyePos.y));
-    let actEyeDist = Math.sqrt((actLEyePos.x - actREyePos.x)*(actLEyePos.x - actREyePos.x) +
-                               (actLEyePos.y - actREyePos.y)*(actLEyePos.y - actREyePos.y));
-   
+
+    let calEyeDist = Math.sqrt(
+      (calLEyePos.x - calREyePos.x) * (calLEyePos.x - calREyePos.x) +
+        (calLEyePos.y - calREyePos.y) * (calLEyePos.y - calREyePos.y)
+    );
+    let actEyeDist = Math.sqrt(
+      (actLEyePos.x - actREyePos.x) * (actLEyePos.x - actREyePos.x) +
+        (actLEyePos.y - actREyePos.y) * (actLEyePos.y - actREyePos.y)
+    );
+
     let calEyeDist = Math.sqrt(
       calLEyePos * calLEyePos + calREyePos * calREyePos
     );
@@ -207,19 +219,22 @@ function App() {
     let calREarPos = calibratedPose["keypoints"][4].position;
     let actLEarPos = currPose["keypoints"][3].position;
     let actREarPos = currPose["keypoints"][4].position;
-    
-    let calEarDist = Math.sqrt((calLEarPos.x - calREarPos.x)*(calLEarPos.x - calREyePos.x) +
-                               (calLEarPos.y - calREarPos.y)*(calLEarPos.y - calREarPos.y));
-    let actEarDist = Math.sqrt((actLEarPos.x - actREarPos.x)*(actLEarPos.x - actREarPos.x) +
-                               (actLEarPos.y - actREarPos.y)*(actLEarPos.y - actREarPos.y));
-    
+
+    let calEarDist = Math.sqrt(
+      (calLEarPos.x - calREarPos.x) * (calLEarPos.x - calREyePos.x) +
+        (calLEarPos.y - calREarPos.y) * (calLEarPos.y - calREarPos.y)
+    );
+    let actEarDist = Math.sqrt(
+      (actLEarPos.x - actREarPos.x) * (actLEarPos.x - actREarPos.x) +
+        (actLEarPos.y - actREarPos.y) * (actLEarPos.y - actREarPos.y)
+    );
+
     let calEarDist = Math.sqrt(
       calLEarPos * calLEarPos + calREarPos * calREarPos
     );
     let actEarDist = Math.sqrt(
       actLEarPos * actLEarPos + actREarPos * actREarPos
     );
-    
 
     //Use those values to detemrine posture
     var isLower = false;
@@ -232,26 +247,27 @@ function App() {
     let eyeDistDiffThreshold = 0.4;
     let earDistDiffThreshold = 0.5;
 
-    isLower = (actNoseHeight - calNoseHeight > noseDistDiffThreshold);
+    isLower = actNoseHeight - calNoseHeight > noseDistDiffThreshold;
 
-    eyesCloser = (actEyeDist - calEyeDist > eyeDistDiffThreshold);
-    earsCloser = (actEarDist - calEarDist > earDistDiffThreshold);
+    eyesCloser = actEyeDist - calEyeDist > eyeDistDiffThreshold;
+    earsCloser = actEarDist - calEarDist > earDistDiffThreshold;
 
-    eyesFurther = (calEyeDist - actEyeDist > eyeDistDiffThreshold);
-    earsFurther = (calEarDist - actEarDist > earDistDiffThreshold);
+    eyesFurther = calEyeDist - actEyeDist > eyeDistDiffThreshold;
+    earsFurther = calEarDist - actEarDist > earDistDiffThreshold;
 
     //Determine bad posture
-    if ((isLower && useNose)) {
-    isLower = calNoseHeight - actNoseHeight > noseDistDiffThreshold;
+    if (isLower && useNose) {
+      //(eyesCloser && useEyes) || (useEars && earsCloser)) // ||  || isFurther)
+      isLower = calNoseHeight - actNoseHeight > noseDistDiffThreshold;
 
-    isCloser =
-      actEyeDist - calEyeDist > eyeDistDiffThreshold &&
-      actEarDist - calEarDist > earDistDiffThreshold;
+      isCloser =
+        actEyeDist - calEyeDist > eyeDistDiffThreshold &&
+        actEarDist - calEarDist > earDistDiffThreshold;
 
-    isFurther = isCloser
-      ? false
-      : calEyeDist - actEyeDist > eyeDistDiffThreshold &&
-        calEarDist - actEarDist > earDistDiffThreshold;
+      isFurther = isCloser
+        ? false
+        : calEyeDist - actEyeDist > eyeDistDiffThreshold &&
+          calEarDist - actEarDist > earDistDiffThreshold;
     }
 
     //Determine bad posture
@@ -295,44 +311,42 @@ function App() {
       >
         Run
       </button>
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
-        <header className="App-header">
-          <Webcam
-            ref={webcamRef}
-            style={{
-              position: "absolute",
-              marginLeft: "auto",
-              marginRight: "auto",
-              left: 0.02,
-              right: 0,
-              textAlign: "center",
-              zindex: 9,
-              width: 640,
-              height: 480,
-            }}
-          />
 
-          <canvas
-            ref={canvasRef}
-            style={{
-              position: "absolute",
-              marginLeft: "auto",
-              marginRight: "auto",
-              left: 0,
-              right: 0,
-              textAlign: "center",
-              zindex: 9,
-              width: 640,
-              height: 480,
-            }}
-          />
-        </header>
-        <Notification bodyPoint={bodyPoint}></Notification>
-      </div>
+      <header className="App-header" style={{ float: "left" }}>
+        <Webcam
+          ref={webcamRef}
+          style={{
+            position: "absolute",
+            marginLeft: "auto",
+            marginRight: "auto",
+            left: 0.02,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
+          }}
+        />
+
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: "absolute",
+            marginLeft: "auto",
+            marginRight: "auto",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
+          }}
+        />
+      </header>
+      <Notification
+        bodyPoint={bodyPoint}
+        style={{ float: "left" }}
+      ></Notification>
     </div>
   );
 }
