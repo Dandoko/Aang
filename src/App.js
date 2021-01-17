@@ -332,7 +332,7 @@ function App() {
         <Box p="400" bg="red.400">
           Box 1
         </Box>
-        <Spacer />
+        <Spacer /> {/* eats available space */}
         <Box p="4" bg="green.400">
           Box 2
         </Box>
