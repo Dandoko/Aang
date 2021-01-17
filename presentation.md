@@ -25,7 +25,6 @@
 
 - Detect changes in posture
 - Displays whether the user is too far, neutral, or too close to the screen
-- Detect leg angles
 - All in the browser to preserve user privacy
   - No pose data ever leaves the user's computer
 
@@ -39,8 +38,9 @@
 # Challenges
 
 - Setting up the project (Tensorflow dependencies)
-- Figuring out the math calculations when working with the keypoints
+- Figuring out the math calculations when working with the Posenet keypoints
 - Working remotely with pair programming
+- Posenet inconsistency
 
 # Plans for the future
 
