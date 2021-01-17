@@ -3,7 +3,7 @@ import head from "./res/head.png";
 import left from "./res/leftArm.png";
 import right from "./res/rightArm.png";
 import legs from "./res/legs.png";
-import base from "./res/base2.png";
+import base from "./res/base.png";
 
 // chooses which model image to display
 export default function Model({ bodyPoint }) {
