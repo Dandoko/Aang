@@ -208,13 +208,6 @@ function App() {
         (actLEyePos.y - actREyePos.y) * (actLEyePos.y - actREyePos.y)
     );
 
-    let calEyeDist = Math.sqrt(
-      calLEyePos * calLEyePos + calREyePos * calREyePos
-    );
-    let actEyeDist = Math.sqrt(
-      actLEyePos * actLEyePos + actREyePos * actREyePos
-    );
-
     let calLEarPos = calibratedPose["keypoints"][3].position;
     let calREarPos = calibratedPose["keypoints"][4].position;
     let actLEarPos = currPose["keypoints"][3].position;
@@ -227,13 +220,6 @@ function App() {
     let actEarDist = Math.sqrt(
       (actLEarPos.x - actREarPos.x) * (actLEarPos.x - actREarPos.x) +
         (actLEarPos.y - actREarPos.y) * (actLEarPos.y - actREarPos.y)
-    );
-
-    let calEarDist = Math.sqrt(
-      calLEarPos * calLEarPos + calREarPos * calREarPos
-    );
-    let actEarDist = Math.sqrt(
-      actLEarPos * actLEarPos + actREarPos * actREarPos
     );
 
     //Use those values to detemrine posture
@@ -257,21 +243,6 @@ function App() {
 
     //Determine bad posture
     if (isLower && useNose) {
-      //(eyesCloser && useEyes) || (useEars && earsCloser)) // ||  || isFurther)
-      isLower = calNoseHeight - actNoseHeight > noseDistDiffThreshold;
-
-      isCloser =
-        actEyeDist - calEyeDist > eyeDistDiffThreshold &&
-        actEarDist - calEarDist > earDistDiffThreshold;
-
-      isFurther = isCloser
-        ? false
-        : calEyeDist - actEyeDist > eyeDistDiffThreshold &&
-          calEarDist - actEarDist > earDistDiffThreshold;
-    }
-
-    //Determine bad posture
-    if (isLower) {
       //|| isCloser || isFurther) {
       setBodyPoint("leftEye");
     } else {
