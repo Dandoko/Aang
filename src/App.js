@@ -257,7 +257,16 @@ function App() {
       //set state "neither"
     }
 
-    console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n")
+    console.log(
+      useEyes +
+        " | " +
+        calEyeDist +
+        " | " +
+        actEyeDist +
+        " | " +
+        eyeDistDiffThreshold +
+        "\n"
+    );
 
     console.log(
       calNoseHeight +
