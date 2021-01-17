@@ -327,7 +327,6 @@ function App() {
           }}
         />
       </header>
-      <DepthNotification distance={distance}></DepthNotification>
       <div style={mainContainer}>
         <div style={fakeNav}>
           <div style={{display:'flex', alignItems:"center", position: "relative", width:"100%"}}>
@@ -346,7 +345,7 @@ function App() {
 
         <Grid w="90%" style={{marginLeft:"5%"}}templateColumns="repeat(5, 1fr)" gap={2}>
           <GridItem style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh',}} colStart={5} h="10">
-            <Notification bodyPoint={"bodyPoint"}></Notification>
+            <Notification distance={distance} bodyPoint={bodyPoint}></Notification>
           </GridItem>
         </Grid>
 
