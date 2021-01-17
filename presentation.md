@@ -9,12 +9,6 @@
 
 # Aang, our epic Avatar that unites your body and prevents bad posture
 
-# Business Plan
-
-- Free (with ads)
-  - Advertisements based on self-improvement, fitness, mental health
-  - Goes well with the theme of healthy living
-
 # Usage
 
 1. Calibrate your start position (stay still with good posture for 10 frames!)
@@ -34,6 +28,13 @@
 - React.js
 - Chakra UI
 - Electron.js
+
+# Business Plan
+
+- Free (with ads)
+  - Advertisements based on self-improvement, fitness, mental health
+  - Goes well with the theme of healthy living
+
 
 # Challenges
 
