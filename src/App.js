@@ -336,7 +336,7 @@ function App() {
         <Box p="4" bg="green.400">
           Box 2
         </Box>
-        <Notification colSpan={6} bodyPoint={bodyPoint}></Notification>
+        <Notification colSpan={6} bodyPoint={"bodyPoint"}></Notification>
       </Flex>
     </div>
   );
