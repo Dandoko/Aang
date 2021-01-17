@@ -1,10 +1,12 @@
 # The hack that fixes your back
 
-> we've gotten really good at bending these past couple of months
+> we've gotten really good at bending these past couple of months 
 
 Made @ Hack the North 2020++
 
 # A mindful webapp to track body posture while working at a computer with a webcam
+
+![cool pic](./src/res/myman.png)
 
 ### `npm start`
 
