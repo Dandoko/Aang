@@ -260,7 +260,7 @@ function App() {
     } else if ((eyesFurther && useEyes) || (useEars && earsFurther)) {
       setDistance("Far");
     } else {
-      setDistance("Neutral")
+      setDistance("Neutral");
     }
 
     console.log(
@@ -330,11 +330,7 @@ function App() {
           }}
         />
       </header>
-      <Notification
-        bodyPoint={bodyPoint}
-      ></Notification>
-      <DepthNotification distance={distance}
-      ></DepthNotification>
+      <DepthNotification distance={distance}></DepthNotification>
 
       <Flex>
         <Box p="400" bg="red.400">
