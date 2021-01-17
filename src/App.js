@@ -15,8 +15,7 @@ import Webcam from "react-webcam";
 import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
-import Model from "./Model";
-import { act } from "react-dom/test-utils";
+import Notification from "./Notification";
 
 function App() {
   const webcamRef = useRef(null);
@@ -149,7 +148,7 @@ function App() {
 
     console.log("Calibrating done");
     console.log(calibratedPose);
-    
+
     calibrated = true;
   };
 
@@ -191,19 +190,36 @@ function App() {
     let calREyePos = calibratedPose["keypoints"][2].position;
     let actLEyePos = currPose["keypoints"][1].position;
     let actREyePos = currPose["keypoints"][2].position;
+    
     let calEyeDist = Math.sqrt((calLEyePos.x - calREyePos.x)*(calLEyePos.x - calREyePos.x) +
                                (calLEyePos.y - calREyePos.y)*(calLEyePos.y - calREyePos.y));
     let actEyeDist = Math.sqrt((actLEyePos.x - actREyePos.x)*(actLEyePos.x - actREyePos.x) +
                                (actLEyePos.y - actREyePos.y)*(actLEyePos.y - actREyePos.y));
-    
+   
+    let calEyeDist = Math.sqrt(
+      calLEyePos * calLEyePos + calREyePos * calREyePos
+    );
+    let actEyeDist = Math.sqrt(
+      actLEyePos * actLEyePos + actREyePos * actREyePos
+    );
+
     let calLEarPos = calibratedPose["keypoints"][3].position;
     let calREarPos = calibratedPose["keypoints"][4].position;
     let actLEarPos = currPose["keypoints"][3].position;
     let actREarPos = currPose["keypoints"][4].position;
+    
     let calEarDist = Math.sqrt((calLEarPos.x - calREarPos.x)*(calLEarPos.x - calREyePos.x) +
                                (calLEarPos.y - calREarPos.y)*(calLEarPos.y - calREarPos.y));
     let actEarDist = Math.sqrt((actLEarPos.x - actREarPos.x)*(actLEarPos.x - actREarPos.x) +
                                (actLEarPos.y - actREarPos.y)*(actLEarPos.y - actREarPos.y));
+    
+    let calEarDist = Math.sqrt(
+      calLEarPos * calLEarPos + calREarPos * calREarPos
+    );
+    let actEarDist = Math.sqrt(
+      actLEarPos * actLEarPos + actREarPos * actREarPos
+    );
+    
 
     //Use those values to detemrine posture
     var isLower = false;
@@ -226,6 +242,20 @@ function App() {
 
     //Determine bad posture
     if ((isLower && useNose)) {//(eyesCloser && useEyes) || (useEars && earsCloser)) {// ||  || isFurther) {
+    isLower = calNoseHeight - actNoseHeight > noseDistDiffThreshold;
+
+    isCloser =
+      actEyeDist - calEyeDist > eyeDistDiffThreshold &&
+      actEarDist - calEarDist > earDistDiffThreshold;
+
+    isFurther = isCloser
+      ? false
+      : calEyeDist - actEyeDist > eyeDistDiffThreshold &&
+        calEarDist - actEarDist > earDistDiffThreshold;
+
+    //Determine bad posture
+    if (isLower) {
+      //|| isCloser || isFurther) {
       setBodyPoint("leftEye");
     } else {
       setBodyPoint("");
@@ -239,10 +269,19 @@ function App() {
       //set state "neither"
     }
 
-    console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n");
+    console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n")
+=======
+    console.log(
+      calNoseHeight +
+        " | " +
+        actNoseHeight +
+        " | " +
+        noseDistDiffThreshold +
+        "\n"
+    );
     console.log(bodyPoint);
     console.log("============================================================");
-  }
+  };
 
   // runPosenet();
 
@@ -255,38 +294,44 @@ function App() {
       >
         Run
       </button>
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        <header className="App-header">
+          <Webcam
+            ref={webcamRef}
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              left: 0.02,
+              right: 0,
+              textAlign: "center",
+              zindex: 9,
+              width: 640,
+              height: 480,
+            }}
+          />
 
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-      </header>
-      <Model bodyPoint={bodyPoint}></Model>
+          <canvas
+            ref={canvasRef}
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              zindex: 9,
+              width: 640,
+              height: 480,
+            }}
+          />
+        </header>
+        <Notification bodyPoint={bodyPoint}></Notification>
+      </div>
     </div>
   );
 }

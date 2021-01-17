@@ -15,21 +15,25 @@ export default function Model({ bodyPoint }) {
     case "rightEar":
     case "leftShoulder":
     case "rightShoulder":
-      return <img src={head} alt="head model" />;
+      return <img src={head} alt="head model" style={bodyImg} />;
     case "leftElbow":
     case "leftWrist":
-      return <img src={left} alt="left arm model" />;
+      return <img src={left} alt="left arm model" style={bodyImg} />;
     case "rightElbow":
     case "rightWrist":
-      return <img src={right} alt="right arm model" />;
+      return <img src={right} alt="right arm model" style={bodyImg} />;
     case "leftHip":
     case "rightHip":
     case "leftKnee":
     case "rightKnee":
     case "leftAnkle":
     case "rightAnkle":
-      return <img src={legs} alt="leg model" />;
+      return <img src={legs} alt="leg model" style={bodyImg} />;
     default:
-      return <img src={base} alt="base model" />;
+      return <img src={base} alt="base model" style={bodyImg} />;
   }
 }
+
+const bodyImg = {
+  backgroundColor: "transparent",
+};
