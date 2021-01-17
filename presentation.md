@@ -7,13 +7,7 @@
 
 - Provide users an accessible webapp to track their body posture while working at a computer with a webcam
 
-# Aang, our epic avatar will fix your back pain
-
-# Business Plan
-
-- Free (with ads)
-  - Advertisements based on self-improvement, fitness, mental health
-  - Goes well with the theme of healthy living
+# Aang, our epic Avatar that unites your body and prevents bad posture
 
 # Usage
 
@@ -25,7 +19,6 @@
 
 - Detect changes in posture
 - Displays whether the user is too far, neutral, or too close to the screen
-- Detect leg angles
 - All in the browser to preserve user privacy
   - No pose data ever leaves the user's computer
 
@@ -36,11 +29,19 @@
 - Chakra UI
 - Electron.js
 
+# Business Plan
+
+- Free (with ads)
+  - Advertisements based on self-improvement, fitness, mental health
+  - Goes well with the theme of healthy living
+
+
 # Challenges
 
 - Setting up the project (Tensorflow dependencies)
-- Figuring out the math calculations when working with the keypoints
+- Figuring out the math calculations when working with the Posenet keypoints
 - Working remotely with pair programming
+- Posenet inconsistency
 
 # Plans for the future
 
