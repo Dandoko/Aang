@@ -17,6 +17,9 @@ import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
 import Notification from "./Notification";
 
+// chakra imports
+import { Button, Flex, Spacer, Box } from "@chakra-ui/react";
+
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -284,15 +287,16 @@ function App() {
 
   return (
     <div className="App">
-      <button
+      <Button
         onClick={() => {
           runPosenet();
         }}
+        size="lg"
       >
-        Run
-      </button>
+        Calibrate
+      </Button>
 
-      <header className="App-header" style={{ float: "left" }}>
+      <header className="App-header" style={{ float: "right" }}>
         <Webcam
           ref={webcamRef}
           style={{
@@ -323,10 +327,17 @@ function App() {
           }}
         />
       </header>
-      <Notification
-        bodyPoint={bodyPoint}
-        style={{ float: "left" }}
-      ></Notification>
+
+      <Flex>
+        <Box p="400" bg="red.400">
+          Box 1
+        </Box>
+        <Spacer />
+        <Box p="4" bg="green.400">
+          Box 2
+        </Box>
+        <Notification colSpan={6} bodyPoint={bodyPoint}></Notification>
+      </Flex>
     </div>
   );
 }
