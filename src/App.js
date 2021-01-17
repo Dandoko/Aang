@@ -16,6 +16,7 @@ import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
 import Notification from "./Notification";
+import DepthNotification from "./DepthNotification";
 
 function App() {
   const webcamRef = useRef(null);
@@ -30,6 +31,7 @@ function App() {
   var calibrated = false;
 
   const [bodyPoint, setBodyPoint] = useState("");
+  const [distance, setDistance] = useState("Neutral");
 
   //  Load posenet
   const runPosenet = async () => {
@@ -251,10 +253,11 @@ function App() {
 
     if ((eyesCloser && useEyes) || (useEars && earsCloser)) {
       //set state "close"
+      setDistance("Close");
     } else if ((eyesFurther && useEyes) || (useEars && earsFurther)) {
-      //set state "far"
+      setDistance("Far");
     } else {
-      //set state "neither"
+      setDistance("Neutral")
     }
 
     console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n")
@@ -316,8 +319,9 @@ function App() {
       </header>
       <Notification
         bodyPoint={bodyPoint}
-        style={{ float: "left" }}
       ></Notification>
+      <DepthNotification distance={distance}
+      ></DepthNotification>
     </div>
   );
 }
