@@ -294,7 +294,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header" style={{ float: "right" }}>
-        <Timer></Timer>
         <Webcam
           ref={webcamRef}
           style={{
@@ -352,13 +351,25 @@ function App() {
             </div>
           </div>
         </div>
-
+        
         <Grid
           w="90%"
           style={{ marginLeft: "5%" }}
           templateColumns="repeat(5, 1fr)"
           gap={2}
         >
+          <GridItem
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+            colStart={1}
+            h="10"
+          >
+            <Timer></Timer>
+          </GridItem>
           <GridItem
             style={{
               display: "flex",

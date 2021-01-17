@@ -29,7 +29,7 @@ export const calibrateBtn = {
     marginBottom: 75,
     fontSize: 30,
     width: 210,
-    heitgh: 850
+    height: 60
 };
 
 export const title = { 
