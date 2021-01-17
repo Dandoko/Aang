@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 
 export default function Timer() {
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(300);
   const [pause, setPause] = useState(true);
+
+  let updateText = !pause ? "Pause" : "Start";
 
   useEffect(() => {
     if (pause) {
@@ -18,7 +20,7 @@ export default function Timer() {
   return (
     <div className="wrap">
       <Button
-        size="lg"
+        style={{display: "block", marginBottom: 10, width: 230, height:50, fontSize: 30}}
         onClick={() => {
           setCounter(300);
           setPause(false);
@@ -26,8 +28,8 @@ export default function Timer() {
       >
         Timer: {counter}
       </Button>
-      <Button size="lg" onClick={() => setPause(!pause)}>
-        Pause
+      <Button style={{width: 230, height:50, fontSize: 30}} onClick={() => setPause(!pause)}>
+        {updateText}
       </Button>
     </div>
   );
