@@ -270,7 +270,7 @@ function App() {
     }
 
     console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n")
-=======
+
     console.log(
       calNoseHeight +
         " | " +
@@ -294,45 +294,41 @@ function App() {
       >
         Run
       </button>
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
-        <header className="App-header">
-          <Webcam
-            ref={webcamRef}
-            style={{
-              position: "absolute",
-              marginLeft: "auto",
-              marginRight: "auto",
-              left: 0.02,
-              right: 0,
-              textAlign: "center",
-              zindex: 9,
-              width: 640,
-              height: 480,
-            }}
-          />
 
-          <canvas
-            ref={canvasRef}
-            style={{
-              position: "absolute",
-              marginLeft: "auto",
-              marginRight: "auto",
-              left: 0,
-              right: 0,
-              textAlign: "center",
-              zindex: 9,
-              width: 640,
-              height: 480,
-            }}
-          />
-        </header>
-        <Notification bodyPoint={bodyPoint}></Notification>
-      </div>
+      <header className="App-header" style= {{float:"left"}}>
+        <Webcam
+          ref={webcamRef}
+          style={{
+            position: "absolute",
+            marginLeft: "auto",
+            marginRight: "auto",
+            left: 0.02,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
+          }}
+        />
+
+        <canvas
+          ref={canvasRef}
+          style={{
+            position: "absolute",
+            marginLeft: "auto",
+            marginRight: "auto",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
+          }}
+        />
+      </header>
+      <Notification bodyPoint={bodyPoint} style= {{float:"left"}}></Notification>
     </div>
+
   );
 }
 
