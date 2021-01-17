@@ -16,6 +16,7 @@ import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
 import Notification from "./Notification";
+import DepthNotification from "./DepthNotification";
 
 // chakra imports
 import { Button, Grid, Box, GridItem, Image  } from "@chakra-ui/react";
@@ -35,6 +36,7 @@ function App() {
   var calibrated = false;
 
   const [bodyPoint, setBodyPoint] = useState("");
+  const [distance, setDistance] = useState("Neutral");
 
   //  Load posenet
   const runPosenet = async () => {
@@ -256,10 +258,11 @@ function App() {
 
     if ((eyesCloser && useEyes) || (useEars && earsCloser)) {
       //set state "close"
+      setDistance("Close");
     } else if ((eyesFurther && useEyes) || (useEars && earsFurther)) {
-      //set state "far"
+      setDistance("Far");
     } else {
-      //set state "neither"
+      setDistance("Neutral");
     }
 
     console.log(
@@ -324,7 +327,7 @@ function App() {
           }}
         />
       </header>
-
+      <DepthNotification distance={distance}></DepthNotification>
       <div style={mainContainer}>
         <div style={fakeNav}>
           <div style={{display:'flex', alignItems:"center", position: "relative", width:"100%"}}>
