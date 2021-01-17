@@ -7,7 +7,7 @@
 
 - Provide users an accessible webapp to track their body posture while working at a computer with a webcam
 
-# Aang, our epic avatar will fix your back pain
+# Aang, our epic Avatar that unites your body and prevents bad posture
 
 # Business Plan
 
