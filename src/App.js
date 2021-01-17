@@ -241,7 +241,7 @@ function App() {
     earsFurther = (calEarDist - actEarDist > earDistDiffThreshold);
 
     //Determine bad posture
-    if ((isLower && useNose)) {//(eyesCloser && useEyes) || (useEars && earsCloser)) {// ||  || isFurther) {
+    if ((isLower && useNose)) {
     isLower = calNoseHeight - actNoseHeight > noseDistDiffThreshold;
 
     isCloser =
@@ -252,6 +252,7 @@ function App() {
       ? false
       : calEyeDist - actEyeDist > eyeDistDiffThreshold &&
         calEarDist - actEarDist > earDistDiffThreshold;
+    }
 
     //Determine bad posture
     if (isLower) {
@@ -270,7 +271,7 @@ function App() {
     }
 
     console.log(useEyes + " | " + calEyeDist + " | " + actEyeDist +  " | " + eyeDistDiffThreshold + "\n")
-=======
+
     console.log(
       calNoseHeight +
         " | " +
