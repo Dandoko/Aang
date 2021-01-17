@@ -346,7 +346,7 @@ function App() {
                 margin: "0 auto",
               }}
             >
-              <Box style={{ marginRight: 10 }} boxSize="40px">
+              <Box style={{ marginRight: 10 }} boxSize="70px">
                 <Image src={logo} alt="Segun Adebayo" />
               </Box>
               <div style={title}>Aang</div>
@@ -376,13 +376,12 @@ function App() {
             ></Notification>
           </GridItem>
         </Grid>
-
+        {/* size="lg" */}
         <div style={footer}>
           <Button
             onClick={() => {
               runPosenet();
             }}
-            size="lg"
             style={calibrateBtn}
           >
             Calibrate

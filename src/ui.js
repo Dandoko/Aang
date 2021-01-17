@@ -7,7 +7,7 @@ export const mainContainer = {
 };
 
 export const fakeNav = {
-    marginTop: 45, 
+    marginTop: 70, 
     display: "flex",
     alignItems: "center",
     textAlign: "center",
@@ -26,11 +26,14 @@ export const footer = {
 };
 
 export const calibrateBtn = {
-    marginBottom: 35
+    marginBottom: 75,
+    fontSize: 30,
+    width: 210,
+    heitgh: 850
 };
 
 export const title = { 
-    fontSize: 30,
+    fontSize: 60,
     fontWeight: "bold",
     fontFamily: "Monospace"
 };
