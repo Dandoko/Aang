@@ -17,7 +17,6 @@ import { drawKeypoints, drawSkeleton } from "./utilities";
 import PoseComponent from "./PoseComponent";
 import Pose from "./Pose";
 import Notification from "./Notification";
-import DepthNotification from "./DepthNotification";
 import Timer from "./Timer";
 
 // chakra imports
@@ -295,6 +294,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header" style={{ float: "right" }}>
+        <Timer></Timer>
         <Webcam
           ref={webcamRef}
           style={{
@@ -311,7 +311,6 @@ function App() {
             borderRadius: 30,
           }}
         />
-
         <canvas
           ref={canvasRef}
           style={{
