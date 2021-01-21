@@ -21,9 +21,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ![Far, bad posture](./src/res/farbadposture.png)
 
+> Too far, bad posture
+
 ![close, good posture](./src/res/closegoodposture.png)
 
+> Too close, good posture
+
 ![close, bad posture](./src/res/closebadposture.png)
+
+>Too close, bad posture
 
 # Features
 
