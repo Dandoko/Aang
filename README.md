@@ -19,6 +19,12 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 2. Tracking dots will appear on your screen. After calibration, they will stay in your "optimal" position
 3. Whenever you stray too far from your initial position, after a brief delay the model will highlight the affected body part
 
+![Far, bad posture](./src/res/farbadposture.png)
+
+![close, good posture](./src/res/closegoodposture.png)
+
+![close, bad posture](./src/res/closebadposture.png)
+
 # Features
 
 - Detect changes in posture
